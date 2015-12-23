@@ -806,8 +806,8 @@ static void do_out_standby(struct stream_out *out)
             }
         }
         out->standby = true;
-        out->nframes = 0;
-
+        out->nframes = 0ll;
+        out->written = 0ll;
         if (out == adev->outputs[OUTPUT_HDMI_MULTI]) {
             /* force standby on low latency output stream so that it can reuse HDMI driver if
              * necessary when restarted */
@@ -1913,6 +1913,7 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
         } else {
             setnlpcmchnsta();
             scount = 0;
+	    out->config.period_size = 2048;
             ALOGD("now use the nlpcm mode");
         }
     } else {
@@ -1948,7 +1949,8 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     config->sample_rate = out_get_sample_rate(&out->stream.common);
 
     out->standby = true;
-    out->nframes = 0;
+    out->nframes = 0ll;
+    out->written = 0ll;
     /* out->muted = false; by calloc() */
     /* out->written = 0; by calloc() */
 
