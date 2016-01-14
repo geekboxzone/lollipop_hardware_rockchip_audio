@@ -1903,10 +1903,16 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     if ((type == OUTPUT_HDMI_MULTI) && (devices == AUDIO_DEVICE_OUT_AUX_DIGITAL)) {
         direct_mode.output_mode = HW_PARAMS_FLAG_NLPCM;
         out->config.format = PCM_FORMAT_S24_LE;
-        if ((out->config.rate == 192000) && (out->config.channels == 8)) {
-            sethbrchnsta();
-            scount = 0;
-            ALOGD("now use the hbr mode");
+        if (out->config.rate == 192000) {
+            if (out->config.channels == 8) {
+                sethbrchnsta();
+                scount = 0;
+                ALOGD("now use the hbr mode");
+            } else {
+                setddpchnsta();
+                scount = 0;
+                ALOGD("now use the ddp mode");
+            }
         } else if (out->config.rate == 44100) {
             out->config.format = PCM_FORMAT_S16_LE;
             ALOGD("now use normal direct output ");

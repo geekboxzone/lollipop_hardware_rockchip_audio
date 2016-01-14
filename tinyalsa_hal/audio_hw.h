@@ -70,7 +70,7 @@
 #include <linux/fb.h>
 #include <hardware_legacy/uevent.h>
 
-#define AUDIO_HAL_VERSION "ALSA Audio Version: V1.0.9"
+#define AUDIO_HAL_VERSION "ALSA Audio Version: V1.1.0"
 
 
 #ifdef BOX_HAL
@@ -558,6 +558,31 @@ void setnlpcmchnsta(void)
        channel_status[CHASTA_BIT38*2+1] |= C_BIT_SET;
        channel_status[CHASTA_BIT39*2] |= C_BIT_SET;
        channel_status[CHASTA_BIT39*2+1] |= C_BIT_SET;
+}
+
+/**
+ * @brief setddpchnsta
+ */
+void setddpchnsta(void)
+{
+       /* sampling frequency default 192k */
+       channel_status[CHASTA_BIT24*2] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT24*2+1] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT25*2] |= C_BIT_SET;
+       channel_status[CHASTA_BIT25*2+1] |= C_BIT_SET;
+       channel_status[CHASTA_BIT26*2] |= C_BIT_SET;
+       channel_status[CHASTA_BIT26*2+1] |= C_BIT_SET;
+       channel_status[CHASTA_BIT27*2] |= C_BIT_SET;
+       channel_status[CHASTA_BIT27*2+1] |= C_BIT_SET;
+       /* original sampling frequency */
+       channel_status[CHASTA_BIT36*2] |= C_BIT_SET;
+       channel_status[CHASTA_BIT36*2+1] |= C_BIT_SET;
+       channel_status[CHASTA_BIT37*2] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT37*2+1] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT38*2] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT38*2+1] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT39*2] &= C_BIT_UNSET;
+       channel_status[CHASTA_BIT39*2+1] &= C_BIT_UNSET;
 }
 
 /**
